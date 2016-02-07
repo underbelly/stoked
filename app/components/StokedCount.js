@@ -9,7 +9,7 @@ import React, {
 
 const StokedCount = ({ count }) => (
   <View style={ styles.container }>
-    <Text style={ styles.stokeCount }>Stoked Count: { count }</Text>
+    <Text style={ styles.stokeCount }>STOKED COUNT: { count }</Text>
   </View>
 )
 
@@ -20,7 +20,8 @@ StokedCount.propTypes = {
 const styles = StyleSheet.create({
   container: {
     height: 60,
-    paddingVertical: 20
+    paddingVertical: 20,
+    backgroundColor: 'transparent'
   },
 
   stokeCount: {

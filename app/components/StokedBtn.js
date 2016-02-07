@@ -10,14 +10,16 @@ import React, {
 
 const StokedBtn = ({ postCount }) => (
   <View style={ styles.container }>
-    <TouchableHighlight
-      style={ styles.btn }
-      underlayColor='#000'
-      activeOpacity={ 0.75 }
-      onPress={ postCount }
-    >
-      <Text style={ styles.btnTxt }>STOKED</Text>
-    </TouchableHighlight>
+    <View style={ styles.btnShadow }>
+      <TouchableHighlight
+        style={ styles.btn }
+        underlayColor='#000'
+        activeOpacity={ 0.75 }
+        onPress={ postCount }
+      >
+        <Text style={ styles.btnTxt }>STOKED</Text>
+      </TouchableHighlight>
+    </View>
   </View>
 )
 
@@ -30,6 +32,14 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+
+  btnShadow: {
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 25 },
+    shadowOpacity: 0.35,
+    shadowRadius: 50,
+    borderRadius: 200,
   },
 
   btn: {
