@@ -4,11 +4,12 @@ import React, {
   Text,
   View,
   TouchableHighlight,
-  StyleSheet
+  StyleSheet,
+  PropTypes,
 } from 'react-native';
 
-const StokedBtn = ({ postCount }) => {
-  return (
+const StokedBtn = ({ postCount }) => (
+  <View style={ styles.container }>
     <TouchableHighlight
       style={ styles.btn }
       underlayColor='#000'
@@ -17,10 +18,20 @@ const StokedBtn = ({ postCount }) => {
     >
       <Text style={ styles.btnTxt }>STOKED</Text>
     </TouchableHighlight>
-  );
-};
+  </View>
+)
+
+StokedBtn.propTypes = {
+  postCount: React.PropTypes.func.isRequired,
+}
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
   btn: {
     alignSelf: 'center',
     alignItems: 'center',
@@ -37,6 +48,6 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontFamily: 'Futura-Medium',
   },
-});
+})
 
 export default StokedBtn;

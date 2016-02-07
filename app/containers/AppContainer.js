@@ -13,6 +13,7 @@ import { bindActionCreators } from 'redux';
 
 import stokedActions, { postCount, getCount } from '../actions/StokedActions';
 import StokedBtn from '../components/StokedBtn';
+import StokedCount from '../components/StokedCount';
 
 class App extends Component {
   static propTypes = {
@@ -31,7 +32,7 @@ class App extends Component {
     return (
       <View style={ styles.container }>
         <StokedBtn postCount={ () => dispatch(postCount(stoked.count)) }/>
-        <Text style={ styles.stokeCount }>Stoked Count: { stoked.count }</Text>
+        <StokedCount count={ stoked.count } />
       </View>
     );
   }
@@ -42,10 +43,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-
-  stokeCount: {
-    fontFamily: 'Futura-Medium',
   },
 });
 
