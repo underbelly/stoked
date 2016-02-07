@@ -3,25 +3,18 @@
 import React, {
   Component,
   PropTypes,
-  Text,
   View,
   StyleSheet,
   Image,
-	DeviceEventEmitter,
-  Animated,
-  Easing
 } from 'react-native';
 
 import { connect } from 'react-redux/native';
 import { bindActionCreators } from 'redux';
-import { Gyroscope } from 'NativeModules';
 
 import stokedActions, { postCount, getCount } from '../actions/StokedActions';
 import StokedBtn from '../components/StokedBtn';
 import StokedCount from '../components/StokedCount';
 import StokedBackground from '../components/StokedBackground';
-
-Gyroscope.setGyroUpdateInterval(0.1);
 
 class App extends Component {
   static propTypes = {
