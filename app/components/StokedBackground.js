@@ -4,7 +4,7 @@ import React, {
   Component,
   PropTypes,
   Image,
-	DeviceEventEmitter,
+  DeviceEventEmitter,
   Animated,
   Easing,
   View,
