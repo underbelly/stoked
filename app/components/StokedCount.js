@@ -9,7 +9,7 @@ import React, {
 
 const StokedCount = ({ count }) => (
   <View style={ styles.container }>
-    <Text style={ styles.stokeCount }>STOKED COUNT: { count }</Text>
+    <Text style={ styles.stokeCount }>STOKED LEVEL: { count }</Text>
   </View>
 )
 

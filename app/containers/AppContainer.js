@@ -7,14 +7,21 @@ import React, {
   View,
   StyleSheet,
   Image,
+	DeviceEventEmitter,
+  Animated,
+  Easing
 } from 'react-native';
 
 import { connect } from 'react-redux/native';
 import { bindActionCreators } from 'redux';
+import { Gyroscope } from 'NativeModules';
 
 import stokedActions, { postCount, getCount } from '../actions/StokedActions';
 import StokedBtn from '../components/StokedBtn';
 import StokedCount from '../components/StokedCount';
+import StokedBackground from '../components/StokedBackground';
+
+Gyroscope.setGyroUpdateInterval(0.1);
 
 class App extends Component {
   static propTypes = {
@@ -32,8 +39,7 @@ class App extends Component {
 
     return (
       <View style={ styles.container }>
-        <Image source={ require('image!mountains') } style={ styles.mountains }/>
-        <Image source={ require('image!snowboarder') } style={ styles.snowboarder }/>
+        <StokedBackground />
         <StokedBtn postCount={ () => dispatch(postCount(stoked.count)) }/>
         <StokedCount count={ stoked.count } />
         <Image source={ require('image!badge') } style={ styles.badge }/>
@@ -56,18 +62,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 36,
     left: 16,
-  },
-
-  mountains: {
-    position: 'absolute',
-    top: 150,
-    left: -50,
-  },
-
-  snowboarder: {
-    position: 'absolute',
-    bottom: 100,
-    left: -50,
   },
 });
 
