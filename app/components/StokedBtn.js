@@ -21,18 +21,23 @@ class StokedBtn extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      animate: new Animated.Value(0)
+      animate: new Animated.Value(0),
+      animating: false,
     };
   }
 
   explode() {
+    if (this.state.animating) return;
+
     this.props.postCount();
+    this.setState({ animating: true });
 
     Animated.timing(this.state.animate, {
       duration: 1500,
       toValue: 34,
     }).start(() => {
       this.state.animate.setValue(0);
+      this.setState({ animating: false });
     });
   }
 
