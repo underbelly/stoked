@@ -29,8 +29,8 @@ class StokedBackground extends Component {
   componentDidMount() {
     Gyroscope.startGyroUpdates();
 
-		DeviceEventEmitter.addListener('GyroData', (data) => {
-			let y = data.rotationRate.y.toFixed(3) * 25;
+    DeviceEventEmitter.addListener('GyroData', (data) => {
+      let y = data.rotationRate.y.toFixed(3) * 25;
 
       Animated.sequence([
         Animated.parallel([
@@ -38,7 +38,7 @@ class StokedBackground extends Component {
           Animated.timing(this.state.boarderAnim, { toValue: y * 2 })
         ])
       ]).start();
-		});
+    });
   }
 
   render() {
