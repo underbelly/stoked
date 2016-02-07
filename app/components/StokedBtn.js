@@ -3,28 +3,56 @@
 import React, {
   Text,
   View,
-  TouchableHighlight,
+  TouchableWithoutFeedback,
   StyleSheet,
   PropTypes,
+  Animated,
+  Component,
 } from 'react-native';
 
-const StokedBtn = ({ postCount }) => (
-  <View style={ styles.container }>
-    <View style={ styles.btnShadow }>
-      <TouchableHighlight
-        style={ styles.btn }
-        underlayColor='#000'
-        activeOpacity={ 0.75 }
-        onPress={ postCount }
-      >
-        <Text style={ styles.btnTxt }>STOKED</Text>
-      </TouchableHighlight>
-    </View>
-  </View>
-)
+const EPIC_GREEN = '#00c775';
+const EPIC_BLACK = '#000000';
 
-StokedBtn.propTypes = {
-  postCount: React.PropTypes.func.isRequired,
+class StokedBtn extends Component {
+  static propTypes = {
+    postCount: React.PropTypes.func.isRequired,
+  };
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      animate: new Animated.Value(0)
+    };
+  }
+
+  explode() {
+    this.props.postCount();
+
+    Animated.timing(this.state.animate, {
+      duration: 1500,
+      toValue: 34,
+    }).start(() => {
+      this.state.animate.setValue(0);
+    });
+  }
+
+  render() {
+    let buttonBG = this.state.animate.interpolate({
+      inputRange: [0, 19, 34],
+      outputRange: [EPIC_BLACK, EPIC_GREEN, EPIC_BLACK],
+      extrapolate: 'clamp'
+    });
+
+    return (
+      <View style={ styles.container }>
+        <TouchableWithoutFeedback onPress={ () => this.explode() }>
+          <Animated.View style={[{ backgroundColor: buttonBG }, styles.btnContainer ]}>
+            <Text style={ styles.btnTxt }>STOKED</Text>
+          </Animated.View>
+        </TouchableWithoutFeedback>
+      </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
@@ -34,22 +62,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 
-  btnShadow: {
+  btnContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 200,
+    width: 200,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 25 },
     shadowOpacity: 0.35,
     shadowRadius: 50,
     borderRadius: 200,
-  },
-
-  btn: {
-    alignSelf: 'center',
-    alignItems: 'center',
-    backgroundColor: '#000',
-    borderRadius: 200,
-    height: 200,
-    width: 200,
-    justifyContent: 'center',
   },
 
   btnTxt: {
