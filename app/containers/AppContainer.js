@@ -6,6 +6,7 @@ import React, {
   Text,
   View,
   StyleSheet,
+  Image,
 } from 'react-native';
 
 import { connect } from 'react-redux/native';
@@ -31,8 +32,11 @@ class App extends Component {
 
     return (
       <View style={ styles.container }>
+        <Image source={ require('image!mountains') } style={ styles.mountains }/>
+        <Image source={ require('image!snowboarder') } style={ styles.snowboarder }/>
         <StokedBtn postCount={ () => dispatch(postCount(stoked.count)) }/>
         <StokedCount count={ stoked.count } />
+        <Image source={ require('image!badge') } style={ styles.badge }/>
       </View>
     );
   }
@@ -43,6 +47,27 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    position: 'relative',
+  },
+
+  badge: {
+    height: 75,
+    width: 75,
+    position: 'absolute',
+    top: 36,
+    left: 16,
+  },
+
+  mountains: {
+    position: 'absolute',
+    top: 150,
+    left: -50,
+  },
+
+  snowboarder: {
+    position: 'absolute',
+    bottom: 100,
+    left: -50,
   },
 });
 
