@@ -15,6 +15,7 @@ import stokedActions, { postCount, getCount } from '../actions/StokedActions';
 import StokedBtn from '../components/StokedBtn';
 import StokedCount from '../components/StokedCount';
 import StokedBackground from '../components/StokedBackground';
+import Snowflakes from '../components/Snowflakes';
 
 class App extends Component {
   static propTypes = {

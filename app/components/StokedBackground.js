@@ -35,8 +35,8 @@ class StokedBackground extends Component {
 
       Animated.sequence([
         Animated.parallel([
-          Animated.timing(this.state.mountainAnim, { toValue: { y: x*0.5, x: y*0.5 }}),
-          Animated.timing(this.state.boarderAnim, { toValue: { y: x*0.5, x: y }})
+          Animated.timing(this.state.mountainAnim, { toValue: { y: x*0.75, x: y*0.75 }}),
+          Animated.timing(this.state.boarderAnim, { toValue: { y: x*0.75, x: y*1.25 }})
         ])
       ]).start();
     });
@@ -48,7 +48,7 @@ class StokedBackground extends Component {
         <Animated.Image
           source={ require('image!mountains') }
           style={[ styles.images, {
-            top: 125,
+            top: 100,
             transform: this.state.mountainAnim.getTranslateTransform()
           }]}
         />

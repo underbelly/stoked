@@ -30,7 +30,7 @@ const BTN_RADIUS = BTN_SIZE / 2;
 const EPIC_GREEN = '#00c775';
 const EPIC_BLACK = '#000000';
 
-const getRandomFloat = () => parseFloat((Math.random() * (1.85 - 2.25) + 2.25).toFixed(2));
+const getRandomFloat = () => parseFloat((Math.random() * (1.75 - 2.25) + 2.25).toFixed(2));
 const getRandomInt = () => Math.floor(Math.random() * (20 - 1)) + 1;
 
 class StokedBtn extends Component {
@@ -67,7 +67,7 @@ class StokedBtn extends Component {
         outputRange: [ (deviceHeight/2), (deviceHeight/getRandomFloat()), (deviceHeight/2)
       ]}),
       stroke: this.state.animate.interpolate({
-        inputRange: [ 0, 0.1, getRandomInt(), 40 ],
+        inputRange: [ 0, 0.1, 20, 40 ],
         outputRange: [ 0, 2, 0, 0 ]
       }),
     };
@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
   },
 
   btnTxt: {
-    fontSize: 32,
+    fontSize: deviceWidth <= 320 ? 21 : 32,
     letterSpacing: 3,
     color: '#fff',
     fontFamily: 'Futura-Medium',
