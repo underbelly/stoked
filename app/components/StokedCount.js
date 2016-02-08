@@ -9,7 +9,8 @@ import React, {
 
 const StokedCount = ({ count }) => (
   <View style={ styles.container }>
-    <Text style={ styles.stokeCount }>STOKED LEVEL: { count }</Text>
+    <Text style={[ styles.stokedTxt, { fontSize: 40 }]}>{ count }</Text>
+    <Text style={ styles.stokedTxt }>STOKED LEVEL</Text>
   </View>
 )
 
@@ -23,16 +24,14 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    height: 60,
     paddingVertical: 20,
     backgroundColor: 'transparent',
   },
 
-  stokeCount: {
+  stokedTxt: {
     fontFamily: 'Futura-Medium',
-    lineHeight: 20,
     textAlign: 'center',
-  }
+  },
 });
 
 export default StokedCount;
