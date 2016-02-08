@@ -18,25 +18,17 @@ import Art, {
   Path,
 } from 'ReactNativeART';
 
+import AnimatedCircle from './AnimatedCircle.js';
+
 const {
   width: deviceWidth,
   height: deviceHeight
 } = Dimensions.get('window');
 
-const AnimatedShape = Animated.createAnimatedComponent(Shape);
+const BTN_SIZE = parseInt((deviceHeight*0.25).toFixed(0));
+const BTN_RADIUS = BTN_SIZE / 2;
 const EPIC_GREEN = '#00c775';
 const EPIC_BLACK = '#000000';
-
-var AnimatedCircle = React.createClass({displayName: "Circle",
-  render: function() {
-    var radius = this.props.radius;
-    var path = Path().moveTo(0, -radius)
-        .arc(0, radius * 2, radius)
-        .arc(0, radius * -2, radius)
-        .close();
-    return React.createElement(AnimatedShape, React.__spread({},  this.props, {d: path}));
-  }
-});
 
 class StokedBtn extends Component {
   static propTypes = {
@@ -47,22 +39,17 @@ class StokedBtn extends Component {
     super(props);
     this.state = {
       animate: new Animated.Value(0),
-      animating: false,
     };
   }
 
   explode() {
-    if (this.state.animating) return;
-
     this.props.postCount();
-    this.setState({ animating: true });
 
     Animated.timing(this.state.animate, {
       duration: 1500,
       toValue: 40,
     }).start(() => {
       this.state.animate.setValue(0);
-      this.setState({ animating: false });
     });
   }
 
@@ -79,7 +66,7 @@ class StokedBtn extends Component {
 
     let circleScale = this.state.animate.interpolate({
       inputRange: [0, 40],
-      outputRange: [ 1, 200 ],
+      outputRange: [ 1, 20 ],
     });
 
     return (
@@ -88,7 +75,7 @@ class StokedBtn extends Component {
           <AnimatedCircle
             x={ deviceWidth / 2 }
             y={ deviceHeight / 2 }
-            radius={ 100 }
+            radius={ BTN_RADIUS }
             scale={ circleScale }
             fill={ EPIC_GREEN }
             opacity={ circleOpacity }
@@ -116,16 +103,16 @@ const styles = StyleSheet.create({
   btnContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    height: 200,
-    width: 200,
+    height: BTN_SIZE,
+    width: BTN_SIZE,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 25 },
     shadowOpacity: 0.35,
     shadowRadius: 50,
-    borderRadius: 200,
+    borderRadius: BTN_SIZE,
     position: 'absolute',
-    left: (deviceWidth / 2) - 100,
-    top: (deviceHeight / 2) - 100,
+    left: (deviceWidth / 2) - BTN_RADIUS,
+    top: (deviceHeight / 2) - BTN_RADIUS,
   },
 
   surface: {
