@@ -15,25 +15,14 @@ import { Gyroscope } from 'NativeModules';
 
 Gyroscope.setGyroUpdateInterval(0.1);
 
-var AnimatedCircle = React.createClass({displayName: "Circle",
-  render: function() {
-    var radius = this.props.radius;
-    var path = Path().moveTo(0, -radius)
-        .arc(0, radius * 2, radius)
-        .arc(0, radius * -2, radius)
-        .close();
-    return React.createElement(AnimatedShape, React.__spread({},  this.props, {d: path}));
-  }
-});
-
 class StokedBackground extends Component {
   static propTypes = {};
 
   constructor(props) {
     super(props);
     this.state = {
-      mountainAnim: new Animated.Value(0),
-      boarderAnim: new Animated.Value(0),
+      mountainAnim: new Animated.ValueXY(),
+      boarderAnim: new Animated.ValueXY(),
     }
   }
 
@@ -42,11 +31,12 @@ class StokedBackground extends Component {
 
     DeviceEventEmitter.addListener('GyroData', (data) => {
       let y = data.rotationRate.y.toFixed(3) * 25;
+      let x = data.rotationRate.x.toFixed(3) * 25;
 
       Animated.sequence([
         Animated.parallel([
-          Animated.timing(this.state.mountainAnim, { toValue: y * 0.5 }),
-          Animated.timing(this.state.boarderAnim, { toValue: y * 2 })
+          Animated.timing(this.state.mountainAnim, { toValue: { y: x*0.5, x: y*0.5 }}),
+          Animated.timing(this.state.boarderAnim, { toValue: { y: x*0.5, x: y }})
         ])
       ]).start();
     });
@@ -59,9 +49,7 @@ class StokedBackground extends Component {
           source={ require('image!mountains') }
           style={[ styles.images, {
             top: 125,
-            transform: [{
-              translateX: this.state.mountainAnim
-            }]
+            transform: this.state.mountainAnim.getTranslateTransform()
           }]}
         />
 
@@ -69,9 +57,7 @@ class StokedBackground extends Component {
           source={ require('image!snowboarder') }
           style={[ styles.images, {
             bottom: 75,
-            transform: [{
-              translateX: this.state.boarderAnim
-            }]
+            transform: this.state.boarderAnim.getTranslateTransform()
           }]}
         />
       </View>
