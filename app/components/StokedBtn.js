@@ -30,8 +30,8 @@ const BTN_RADIUS = BTN_SIZE / 2;
 const EPIC_GREEN = '#00c775';
 const EPIC_BLACK = '#000000';
 
-const getRandomFloat = () => parseFloat((Math.random() * (1.85 - 2.15) + 2.15).toFixed(2));
-const getRandomInt = () => Math.floor(Math.random() * (25 - 1)) + 1;
+const getRandomFloat = () => parseFloat((Math.random() * (1.85 - 2.25) + 2.25).toFixed(2));
+const getRandomInt = () => Math.floor(Math.random() * (20 - 1)) + 1;
 
 class StokedBtn extends Component {
   static propTypes = {
