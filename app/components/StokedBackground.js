@@ -15,6 +15,17 @@ import { Gyroscope } from 'NativeModules';
 
 Gyroscope.setGyroUpdateInterval(0.1);
 
+var AnimatedCircle = React.createClass({displayName: "Circle",
+  render: function() {
+    var radius = this.props.radius;
+    var path = Path().moveTo(0, -radius)
+        .arc(0, radius * 2, radius)
+        .arc(0, radius * -2, radius)
+        .close();
+    return React.createElement(AnimatedShape, React.__spread({},  this.props, {d: path}));
+  }
+});
+
 class StokedBackground extends Component {
   static propTypes = {};
 

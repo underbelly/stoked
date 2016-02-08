@@ -8,10 +8,35 @@ import React, {
   PropTypes,
   Animated,
   Component,
+  Dimensions,
 } from 'react-native';
 
+import Art, {
+  Surface,
+  Group,
+  Shape,
+  Path,
+} from 'ReactNativeART';
+
+const {
+  width: deviceWidth,
+  height: deviceHeight
+} = Dimensions.get('window');
+
+const AnimatedShape = Animated.createAnimatedComponent(Shape);
 const EPIC_GREEN = '#00c775';
 const EPIC_BLACK = '#000000';
+
+var AnimatedCircle = React.createClass({displayName: "Circle",
+  render: function() {
+    var radius = this.props.radius;
+    var path = Path().moveTo(0, -radius)
+        .arc(0, radius * 2, radius)
+        .arc(0, radius * -2, radius)
+        .close();
+    return React.createElement(AnimatedShape, React.__spread({},  this.props, {d: path}));
+  }
+});
 
 class StokedBtn extends Component {
   static propTypes = {
@@ -34,7 +59,7 @@ class StokedBtn extends Component {
 
     Animated.timing(this.state.animate, {
       duration: 1500,
-      toValue: 34,
+      toValue: 40,
     }).start(() => {
       this.state.animate.setValue(0);
       this.setState({ animating: false });
@@ -43,13 +68,32 @@ class StokedBtn extends Component {
 
   render() {
     let buttonBG = this.state.animate.interpolate({
-      inputRange: [0, 19, 34],
+      inputRange: [0, 0.1, 40],
       outputRange: [EPIC_BLACK, EPIC_GREEN, EPIC_BLACK],
-      extrapolate: 'clamp'
+    });
+
+    let circleOpacity = this.state.animate.interpolate({
+      inputRange: [0, 0.1, 20],
+      outputRange: [ 0, 0.2, 0 ],
+    });
+
+    let circleScale = this.state.animate.interpolate({
+      inputRange: [0, 40],
+      outputRange: [ 1, 200 ],
     });
 
     return (
       <View style={ styles.container }>
+				<Surface style={ styles.surface } width={ deviceWidth } height={ deviceHeight }>
+          <AnimatedCircle
+            x={ deviceWidth / 2 }
+            y={ deviceHeight / 2 }
+            radius={ 100 }
+            scale={ circleScale }
+            fill={ EPIC_GREEN }
+            opacity={ circleOpacity }
+          />
+				</Surface>
         <TouchableWithoutFeedback onPress={ () => this.explode() }>
           <Animated.View style={[{ backgroundColor: buttonBG }, styles.btnContainer ]}>
             <Text style={ styles.btnTxt }>STOKED</Text>
@@ -62,9 +106,11 @@ class StokedBtn extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
   },
 
   btnContainer: {
@@ -77,6 +123,16 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.35,
     shadowRadius: 50,
     borderRadius: 200,
+    position: 'absolute',
+    left: (deviceWidth / 2) - 100,
+    top: (deviceHeight / 2) - 100,
+  },
+
+  surface: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    backgroundColor: 'transparent',
   },
 
   btnTxt: {

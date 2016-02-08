@@ -19,14 +19,19 @@ StokedCount.propTypes = {
 
 const styles = StyleSheet.create({
   container: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
     height: 60,
     paddingVertical: 20,
-    backgroundColor: 'transparent'
+    backgroundColor: 'transparent',
   },
 
   stokeCount: {
     fontFamily: 'Futura-Medium',
     lineHeight: 20,
+    textAlign: 'center',
   }
 });
 
