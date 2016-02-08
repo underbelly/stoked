@@ -30,6 +30,9 @@ const BTN_RADIUS = BTN_SIZE / 2;
 const EPIC_GREEN = '#00c775';
 const EPIC_BLACK = '#000000';
 
+const getRandomFloat = () => parseFloat((Math.random() * (1.85 - 2.15) + 2.15).toFixed(2));
+const getRandomInt = () => Math.floor(Math.random() * (25 - 1)) + 1;
+
 class StokedBtn extends Component {
   static propTypes = {
     postCount: React.PropTypes.func.isRequired,
@@ -51,6 +54,36 @@ class StokedBtn extends Component {
     }).start(() => {
       this.state.animate.setValue(0);
     });
+  }
+
+  renderRandomCircles(num) {
+    let circleAnim = {
+      moveX: this.state.animate.interpolate({
+        inputRange: [0, getRandomInt(), 40],
+        outputRange: [ (deviceWidth/2), (deviceWidth/getRandomFloat()), (deviceWidth/2)
+      ]}),
+      moveY: this.state.animate.interpolate({
+        inputRange: [0, getRandomInt(), 40],
+        outputRange: [ (deviceHeight/2), (deviceHeight/getRandomFloat()), (deviceHeight/2)
+      ]}),
+      stroke: this.state.animate.interpolate({
+        inputRange: [ 0, 0.1, getRandomInt(), 40 ],
+        outputRange: [ 0, 2, 0, 0 ]
+      }),
+    };
+
+    return (
+      <AnimatedCircle
+        key={ num }
+        x={ circleAnim.moveX }
+        y={ circleAnim.moveY }
+        radius={ BTN_RADIUS }
+        scale={ 1 }
+        strokeWidth={ circleAnim.stroke }
+        stroke={ EPIC_GREEN }
+        opacity={ 1 }
+      />
+    );
   }
 
   render() {
@@ -80,6 +113,7 @@ class StokedBtn extends Component {
             fill={ EPIC_GREEN }
             opacity={ circleOpacity }
           />
+          { [...Array(6).keys()].map((num) => this.renderRandomCircles(num)) }
 				</Surface>
         <TouchableWithoutFeedback onPress={ () => this.explode() }>
           <Animated.View style={[{ backgroundColor: buttonBG }, styles.btnContainer ]}>
