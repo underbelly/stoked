@@ -34,7 +34,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    this.props.dispatch(getCount());
+    this.props.dispatch(getCount(this.props.currentUser.username));
   }
 
   render() {
@@ -44,7 +44,7 @@ class App extends Component {
       <View style={{ flex: 1 }}>
         { currentUser.username !== null && <Game
           count={ stoked.count }
-          postCounter={ () => dispatch(postCount(stoked.count)) }
+          postCounter={ () => dispatch(postCount(currentUser.username, stoked.count)) }
           destroySession={ () => dispatch(destroySession()) }
         /> }
         { currentUser.username === null && <Login

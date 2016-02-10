@@ -4,10 +4,7 @@ import {
   INCREMENT_COUNT
 } from '../actions/StokedActions';
 
-let StokedState = {
-  count: undefined,
-  currentUser: undefined,
-}
+let StokedState = { count: 0 }
 
 export default (state = StokedState, action) => {
   switch(action.type) {
