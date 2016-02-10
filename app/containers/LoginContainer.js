@@ -5,7 +5,8 @@ import React, {
   Text,
   Component,
   StyleSheet,
-  PropTypes
+  PropTypes,
+  TouchableHighlight
 } from 'react-native';
 
 import simpleAuthClient from 'react-native-simple-auth';
@@ -18,10 +19,22 @@ class Login extends Component {
     simpleAuthClient.configure(secrets);
   }
 
+  login() {
+    simpleAuthClient.authorize('twitter')
+    .then((data) => {
+      console.log(data);
+    })
+    .catch((error) => { console.log(error) })
+  }
+
   render() {
     return (
       <View style={ styles.container }>
-        <Text>Login</Text>
+        <TouchableHighlight
+          onPress={ () => this.login() }
+        >
+          <Text>Twitter</Text>
+        </TouchableHighlight>
       </View>
     );
   }
