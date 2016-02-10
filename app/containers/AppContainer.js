@@ -12,6 +12,12 @@ import { connect } from 'react-redux/native';
 import { bindActionCreators } from 'redux';
 import stokedActions, { postCount, getCount } from '../actions/StokedActions';
 
+import sessionActions, {
+  getSession,
+  setSession,
+  destroySession,
+} from '../actions/SessionActions';
+
 import Game from './GameContainer';
 import Login from './LoginContainer';
 
@@ -23,20 +29,27 @@ class App extends Component {
     }),
   };
 
+  componentWillMount() {
+    this.props.dispatch(getSession());
+  }
+
   componentDidMount() {
     this.props.dispatch(getCount());
   }
 
   render() {
-    const { dispatch, stoked } = this.props;
+    const { dispatch, stoked, currentUser } = this.props;
 
     return (
       <View style={{ flex: 1 }}>
-        { stoked.currentUser && <Game
+        { currentUser.username !== null && <Game
           count={ stoked.count }
           postCounter={ () => dispatch(postCount(stoked.count)) }
+          destroySession={ () => dispatch(destroySession()) }
         /> }
-        { !stoked.currentUser && <Login /> }
+        { currentUser.username === null && <Login
+          setSession={ (twitterData) => dispatch(setSession(twitterData)) }
+        /> }
       </View>
     );
   }
@@ -44,7 +57,8 @@ class App extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    stoked: state.stokedReducer
+    stoked: state.stokedReducer,
+    currentUser: state.sessionReducer
   };
 };
 

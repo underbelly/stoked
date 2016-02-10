@@ -21,9 +21,7 @@ class Login extends Component {
 
   login() {
     simpleAuthClient.authorize('twitter')
-    .then((data) => {
-      console.log(data);
-    })
+    .then((data) => this.props.setSession(data) )
     .catch((error) => { console.log(error) })
   }
 
