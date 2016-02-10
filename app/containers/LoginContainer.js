@@ -19,6 +19,8 @@ const {
   height: deviceHeight
 } = Dimensions.get('window');
 
+const BADGE_SIZE = parseInt((deviceWidth*0.6).toFixed(0));
+
 class Login extends Component {
   static propTypes = {};
 
@@ -35,8 +37,8 @@ class Login extends Component {
   render() {
     return (
       <View style={ styles.container }>
-        <View style={ styles.badge }>
-          <Image source={ require('image!badge') } />
+        <View style={ styles.badgeContainer }>
+          <Image source={ require('image!badge') } style={ styles.badge } />
         </View>
 
         <View style={ styles.btnContainer }>
@@ -67,10 +69,15 @@ const styles = StyleSheet.create({
     backgroundColor: '#e6e6e6',
   },
 
-  badge: {
+  badgeContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+
+  badge: {
+    height: BADGE_SIZE,
+    width: BADGE_SIZE,
   },
 
   btnContainer: {

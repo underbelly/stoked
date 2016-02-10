@@ -25,7 +25,7 @@ const {
   height: deviceHeight
 } = Dimensions.get('window');
 
-const BTN_SIZE = parseInt((deviceHeight*0.25).toFixed(0));
+const BTN_SIZE = parseInt((deviceWidth*0.6).toFixed(0));
 const BTN_RADIUS = BTN_SIZE / 2;
 const EPIC_GREEN = '#00c775';
 const EPIC_BLACK = '#000000';
