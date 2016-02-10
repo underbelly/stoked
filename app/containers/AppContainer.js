@@ -10,17 +10,16 @@ import React, {
 
 import { connect } from 'react-redux/native';
 import { bindActionCreators } from 'redux';
-
 import stokedActions, { postCount, getCount } from '../actions/StokedActions';
-import StokedBtn from '../components/StokedBtn';
-import StokedCount from '../components/StokedCount';
-import StokedBackground from '../components/StokedBackground';
-import Snowflakes from '../components/Snowflakes';
+
+import Game from './GameContainer';
+import Login from './LoginContainer';
 
 class App extends Component {
   static propTypes = {
     stoked: React.PropTypes.shape({
-      count: React.PropTypes.number
+      count: React.PropTypes.number,
+      currentUser: React.PropTypes.obj
     }),
   };
 
@@ -32,32 +31,16 @@ class App extends Component {
     const { dispatch, stoked } = this.props;
 
     return (
-      <View style={ styles.container }>
-        <StokedBackground />
-        <StokedBtn postCount={ () => dispatch(postCount(stoked.count)) }/>
-        <StokedCount count={ stoked.count } />
-        <Image source={ require('image!badge') } style={ styles.badge }/>
+      <View style={{ flex: 1 }}>
+        { stoked.currentUser && <Game
+          count={ stoked.count }
+          postCounter={ () => dispatch(postCount(stoked.count)) }
+        /> }
+        { !stoked.currentUser && <Login /> }
       </View>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'relative',
-  },
-
-  badge: {
-    height: 75,
-    width: 75,
-    position: 'absolute',
-    top: 36,
-    left: 16,
-  },
-});
 
 const mapStateToProps = (state) => {
   return {

@@ -6,6 +6,7 @@ import {
 
 let StokedState = {
   count: undefined,
+  currentUser: undefined,
 }
 
 export default (state = StokedState, action) => {
