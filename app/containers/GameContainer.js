@@ -28,6 +28,7 @@ class Game extends Component {
         <StokedBtn postCount={ () => this.props.postCounter() }/>
         <StokedCount count={ this.props.count } />
         <TouchableHighlight
+          underlayColor='transparent'
           style={ styles.badge }
           onPress={ () => this.props.destroySession() }
         >
