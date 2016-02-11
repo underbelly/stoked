@@ -6,6 +6,7 @@ import api from '../utils/api';
  * Action Types
  */
 export const INCREMENT_COUNT = 'INCREMENT_COUNT';
+export const LOADED = 'LOADED';
 
 /*
  * Action Creators
@@ -13,6 +14,10 @@ export const INCREMENT_COUNT = 'INCREMENT_COUNT';
 
 export const incrementCount = (count) => {
   return { type: INCREMENT_COUNT, count: count }
+};
+
+export const loaded = () => {
+  return { type: LOADED }
 };
 
 export const postCount = (username, count) => {

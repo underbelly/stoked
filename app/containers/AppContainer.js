@@ -25,16 +25,15 @@ class App extends Component {
   static propTypes = {
     stoked: React.PropTypes.shape({
       count: React.PropTypes.number,
-      currentUser: React.PropTypes.obj
+      loaded: React.PropTypes.bool,
     }),
+    currentUser: React.PropTypes.shape({
+      username: React.PropTypes.string
+    })
   };
 
   componentWillMount() {
     this.props.dispatch(getSession());
-  }
-
-  componentDidMount() {
-    this.props.dispatch(getCount(this.props.currentUser.username));
   }
 
   render() {
@@ -42,12 +41,12 @@ class App extends Component {
 
     return (
       <View style={{ flex: 1 }}>
-        { currentUser.username !== null && <Game
+        { currentUser.username !== null && stoked.loaded && <Game
           count={ stoked.count }
           postCounter={ () => dispatch(postCount(currentUser.username, stoked.count)) }
           destroySession={ () => dispatch(destroySession()) }
         /> }
-        { currentUser.username === null && <Login
+        { currentUser.username === null && stoked.loaded && <Login
           setSession={ (twitterData) => dispatch(setSession(twitterData)) }
         /> }
       </View>

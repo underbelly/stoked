@@ -4,6 +4,11 @@ import React, {
   AsyncStorage
 } from 'react-native';
 
+import {
+  getCount,
+  loaded
+} from './StokedActions';
+
 const SESSION_KEY = '@SessionStorage:key'
 
 /*
@@ -31,8 +36,13 @@ export const setSession = (twitterData) => {
 export const getSession = () => {
   return (dispatch) => {
     AsyncStorage.getItem(SESSION_KEY).then((data) => {
-      if (data === null) return;
-      dispatch(setCurrentUser(data));
+      if (data === null) {
+        dispatch(loaded());
+      } else {
+        dispatch(setCurrentUser(data));
+        dispatch(getCount(data));
+        dispatch(loaded());
+      };
     }).catch((error) => { console.log(error); });
   }
 };
