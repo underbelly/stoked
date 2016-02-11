@@ -21,6 +21,9 @@ DerivedData
 *.ipa
 *.xcuserstate
 project.xcworkspace
+secrets.js
+Podfile.lock
+Pods
 
 # Android/IJ
 #

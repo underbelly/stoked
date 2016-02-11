@@ -10,58 +10,54 @@ import React, {
 
 import { connect } from 'react-redux/native';
 import { bindActionCreators } from 'redux';
-
 import stokedActions, { postCount, getCount } from '../actions/StokedActions';
-import StokedBtn from '../components/StokedBtn';
-import StokedCount from '../components/StokedCount';
-import StokedBackground from '../components/StokedBackground';
-import Snowflakes from '../components/Snowflakes';
+
+import sessionActions, {
+  getSession,
+  setSession,
+  destroySession,
+} from '../actions/SessionActions';
+
+import Game from './GameContainer';
+import Login from './LoginContainer';
 
 class App extends Component {
   static propTypes = {
     stoked: React.PropTypes.shape({
-      count: React.PropTypes.number
+      count: React.PropTypes.number,
+      loaded: React.PropTypes.bool,
     }),
+    currentUser: React.PropTypes.shape({
+      username: React.PropTypes.string
+    })
   };
 
-  componentDidMount() {
-    this.props.dispatch(getCount());
+  componentWillMount() {
+    this.props.dispatch(getSession());
   }
 
   render() {
-    const { dispatch, stoked } = this.props;
+    const { dispatch, stoked, currentUser } = this.props;
 
     return (
-      <View style={ styles.container }>
-        <StokedBackground />
-        <StokedBtn postCount={ () => dispatch(postCount(stoked.count)) }/>
-        <StokedCount count={ stoked.count } />
-        <Image source={ require('image!badge') } style={ styles.badge }/>
+      <View style={{ flex: 1 }}>
+        { currentUser.username !== null && stoked.loaded && <Game
+          count={ stoked.count }
+          postCounter={ () => dispatch(postCount(currentUser.username, stoked.count)) }
+          destroySession={ () => dispatch(destroySession()) }
+        /> }
+        { currentUser.username === null && stoked.loaded && <Login
+          setSession={ (twitterData) => dispatch(setSession(twitterData)) }
+        /> }
       </View>
     );
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'relative',
-  },
-
-  badge: {
-    height: 75,
-    width: 75,
-    position: 'absolute',
-    top: 36,
-    left: 16,
-  },
-});
-
 const mapStateToProps = (state) => {
   return {
-    stoked: state.stokedReducer
+    stoked: state.stokedReducer,
+    currentUser: state.sessionReducer
   };
 };
 
