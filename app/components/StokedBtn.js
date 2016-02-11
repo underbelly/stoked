@@ -19,6 +19,7 @@ import Art, {
 } from 'ReactNativeART';
 
 import AnimatedCircle from './AnimatedCircle.js';
+import numUtils from '../utils/num';
 
 const {
   width: deviceWidth,
@@ -29,9 +30,6 @@ const BTN_SIZE = parseInt((deviceWidth*0.6).toFixed(0));
 const BTN_RADIUS = BTN_SIZE / 2;
 const EPIC_GREEN = '#00c775';
 const EPIC_BLACK = '#000000';
-
-const getRandomFloat = () => parseFloat((Math.random() * (1.75 - 2.25) + 2.25).toFixed(2));
-const getRandomInt = () => Math.floor(Math.random() * (20 - 1)) + 1;
 
 class StokedBtn extends Component {
   static propTypes = {
@@ -59,12 +57,12 @@ class StokedBtn extends Component {
   renderRandomCircles(num) {
     let circleAnim = {
       moveX: this.state.animate.interpolate({
-        inputRange: [0, getRandomInt(), 40],
-        outputRange: [ (deviceWidth/2), (deviceWidth/getRandomFloat()), (deviceWidth/2)
+        inputRange: [0, numUtils.getRandomInt(1,20), 40],
+        outputRange: [ (deviceWidth/2), (deviceWidth/numUtils.getRandomFloat(1.75,2.25)), (deviceWidth/2)
       ]}),
       moveY: this.state.animate.interpolate({
-        inputRange: [0, getRandomInt(), 40],
-        outputRange: [ (deviceHeight/2), (deviceHeight/getRandomFloat()), (deviceHeight/2)
+        inputRange: [0, numUtils.getRandomInt(1,20), 40],
+        outputRange: [ (deviceHeight/2), (deviceHeight/numUtils.getRandomFloat(1.75,2.25)), (deviceHeight/2)
       ]}),
       stroke: this.state.animate.interpolate({
         inputRange: [ 0, 0.1, 20, 40 ],
