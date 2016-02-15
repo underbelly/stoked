@@ -16,8 +16,8 @@ import Snowflakes from '../components/Snowflakes';
 
 class Game extends Component {
   static propTypes = {
-    count: React.PropTypes.number,
-    postCounter: React.PropTypes.func.isRequired,
+    highScore: React.PropTypes.number,
+    postScore: React.PropTypes.func.isRequired,
     destroySession: React.PropTypes.func.isRequired
   };
 
@@ -25,8 +25,8 @@ class Game extends Component {
     return (
       <View style={ styles.container }>
         <StokedBackground />
-        <StokedBtn postCount={ () => this.props.postCounter() }/>
-        <StokedCount count={ this.props.count } />
+        <StokedBtn postScore={ (score) => this.props.postScore(score) }/>
+        <StokedCount highScore={ this.props.highScore } />
         <TouchableHighlight
           underlayColor='transparent'
           style={ styles.badge }

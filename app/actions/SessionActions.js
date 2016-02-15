@@ -5,7 +5,7 @@ import React, {
 } from 'react-native';
 
 import {
-  getCount,
+  getScore,
   loaded
 } from './StokedActions';
 
@@ -40,7 +40,7 @@ export const getSession = () => {
         dispatch(loaded());
       } else {
         dispatch(setCurrentUser(data));
-        dispatch(getCount(data));
+        dispatch(getScore(data));
         dispatch(loaded());
       };
     }).catch((error) => { console.log(error); });

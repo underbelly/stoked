@@ -42,8 +42,8 @@ class App extends Component {
     return (
       <View style={{ flex: 1 }}>
         { currentUser.username !== null && stoked.loaded && <Game
-          count={ stoked.count }
-          postCounter={ () => dispatch(postCount(currentUser.username, stoked.count)) }
+          highScore={ stoked.highScore }
+          postScore={ (score) => dispatch(postScore(currentUser.username, score)) }
           destroySession={ () => dispatch(destroySession()) }
         /> }
         { currentUser.username === null && stoked.loaded && <Login

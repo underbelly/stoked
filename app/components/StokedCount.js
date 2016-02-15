@@ -7,15 +7,15 @@ import React, {
   View,
 } from 'react-native';
 
-const StokedCount = ({ count }) => (
+const StokedCount = ({ highScore }) => (
   <View style={ styles.container }>
-    <Text style={[ styles.stokedTxt, { fontSize: 40 }]}>{ count }</Text>
+    <Text style={[ styles.stokedTxt, { fontSize: 40 }]}>{ highScore }</Text>
     <Text style={ styles.stokedTxt }>STOKED LEVEL</Text>
   </View>
 )
 
 StokedCount.propTypes = {
-  count: React.PropTypes.number,
+  highScore: React.PropTypes.number,
 }
 
 const styles = StyleSheet.create({

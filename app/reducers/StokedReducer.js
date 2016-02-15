@@ -6,14 +6,14 @@ import {
 } from '../actions/StokedActions';
 
 let StokedState = {
-  count: 0,
+  highScore: 0,
   loaded: false,
 }
 
 export default (state = StokedState, action) => {
   switch(action.type) {
     case INCREMENT_COUNT:
-      return { ...state, count: action.count }
+      return { ...state, highScore: action.highScore }
     case LOADED:
       return { ...state, loaded: true }
     default:
