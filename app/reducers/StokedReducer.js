@@ -1,7 +1,7 @@
 'use strict';
 
 import {
-  INCREMENT_COUNT,
+  SET_HIGH_SCORE,
   LOADED
 } from '../actions/StokedActions';
 
@@ -12,7 +12,7 @@ let StokedState = {
 
 export default (state = StokedState, action) => {
   switch(action.type) {
-    case INCREMENT_COUNT:
+    case SET_HIGH_SCORE:
       return { ...state, highScore: action.highScore }
     case LOADED:
       return { ...state, loaded: true }

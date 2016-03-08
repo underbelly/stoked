@@ -9,8 +9,8 @@ import React, {
 
 const StokedCount = ({ highScore }) => (
   <View style={ styles.container }>
-    <Text style={[ styles.stokedTxt, { fontSize: 40 }]}>{ highScore }</Text>
-    <Text style={ styles.stokedTxt }>STOKED LEVEL</Text>
+    <Text style={[ styles.stokedTxt, { fontSize: 40 }]}>{ `${highScore}%` }</Text>
+    <Text style={ styles.stokedTxt }>TODAYS HIGH SCORE</Text>
   </View>
 )
 

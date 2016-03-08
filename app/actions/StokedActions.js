@@ -5,35 +5,44 @@ import api from '../utils/api';
 /*
  * Action Types
  */
-export const INCREMENT_COUNT = 'INCREMENT_COUNT';
+export const SET_HIGH_SCORE = 'SET_HIGH_SCORE';
 export const LOADED = 'LOADED';
 
 /*
  * Action Creators
  */
 
-export const incrementCount = (highScore) => {
-  return { type: INCREMENT_COUNT, highScore: highScore }
+export const setHighScore = (highScore) => {
+  return { type: SET_HIGH_SCORE, highScore: highScore }
 };
 
 export const loaded = () => {
   return { type: LOADED }
 };
 
-export const postScore = (username, score) => {
-  return (dispatch) => {
-    api.postStokedCount(username, score).then((data) => {
-      dispatch(incrementCount(data));
-    }).catch((error) => {
-      console.log('Request failed', error);
-    });
+export const postScore = (score) => {
+  return (dispatch, getState) => {
+    let { sessionReducer, stokedReducer } = getState();
+    score = score * 100;
+
+    if (score > stokedReducer.highScore) {
+      api.postStokedCount(sessionReducer.username, score)
+      .then((data) => {
+        data = parseFloat(data.toFixed(2))
+        dispatch(setHighScore(data))
+      })
+      .catch((error) => console.log('Request failed', error));
+    }
   }
 };
 
 export const getScore = (username) => {
   return (dispatch) => {
-    api.getStokedCount(username).then((data) => {
-      dispatch(incrementCount(data));
+    api.getStokedCount(username)
+    .then((data) => {
+      let highScore = parseFloat(data.toFixed(2));
+
+      dispatch(setHighScore(highScore));
     }).catch((error) => {
       console.log('Request failed', error);
     });

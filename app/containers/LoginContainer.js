@@ -42,6 +42,8 @@ class Login extends Component {
         </View>
 
         <View style={ styles.btnContainer }>
+          <Text style={ styles.typographyBold }>Sign in below:</Text>
+          <Text style={ styles.typography }>This will allow us to use your Twitter username for scorekeeping and a leaderboard.</Text>
           <TouchableHighlight
             style={ styles.btn }
             onPress={ () => this.login() }
@@ -87,9 +89,26 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 25,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 20 },
-    shadowOpacity: 0.35,
-    shadowRadius: 13,
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.25,
+    shadowRadius: 12,
+  },
+
+  typographyBold: {
+    fontFamily: 'Futura-CondensedExtraBold',
+    letterSpacing: 0.5,
+    fontSize: 14,
+    lineHeight: 22,
+    marginBottom: 6,
+  },
+
+  typography: {
+    fontFamily: 'Futura-Medium',
+    letterSpacing: 0.5,
+    fontSize: 13,
+    lineHeight: 18,
+    marginBottom: 30,
+    color: 'rgba(0,0,0,0.5)',
   },
 
   btnTxt: {

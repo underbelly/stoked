@@ -9,13 +9,16 @@ import React, {
   Animated,
   Component,
   Dimensions,
+  Easing,
 } from 'react-native';
 
 import { Surface } from 'gl-react-native';
+import { connect } from 'react-redux/native';
 
 import numUtils from '../utils/num';
 import AnimatedProgress from './AnimatedProgress';
 import Explode from './Explode';
+import { postScore, getCount } from '../actions/StokedActions';
 
 const {
   width: deviceWidth,
@@ -26,8 +29,8 @@ const BTN_SIZE = parseInt((deviceWidth*0.6).toFixed(0));
 const BTN_RADIUS = BTN_SIZE / 2;
 const EPIC_GREEN = 'rgb(0,199,117)';
 const EPIC_BLACK = 'rgb(0,0,0)';
-const ACTION_TIMER_MIN = 500;
-const ACTION_TIMER_MAX = 1000;
+const ACTION_TIMER_MIN = 250;
+const ACTION_TIMER_MAX = 500;
 
 class StokedBtn extends Component {
   static propTypes = {
@@ -38,43 +41,65 @@ class StokedBtn extends Component {
     super(props);
     this.state = {
       progress: new Animated.Value(0),
-      actionTimer: numUtils.getRandomInt(ACTION_TIMER_MIN,ACTION_TIMER_MAX)
-    };
+      lastScoreAnimation: new Animated.Value(1),
+      actionTimer: numUtils.getRandomInt(ACTION_TIMER_MIN,ACTION_TIMER_MAX),
+      showScore: false,
+      lastScore: 0,
+    }
   }
 
   componentWillUnMount() {
-    clearTimeout(this.explodeTimer);
-    this.setState({ explode: false });
+    clearTimeout(this.explodeTimer)
+    this.setState({ explode: false })
   }
 
   onPressOut() {
-    this.state.progress.stopAnimation((value) => console.log(value));
-    this.state.progress.setValue(0);
-    this.setState({
-      actionTimer: numUtils.getRandomInt(ACTION_TIMER_MIN,ACTION_TIMER_MAX),
-      explode: true,
-    });
+    this.state.progress.stopAnimation((value) => {
+      let displayValue = (value * 100).toFixed(2)
+      this.props.postScore(value)
 
-    this.explodeTimer = setTimeout(() => this.setState({ explode: false }), 1500);
+      this.setState({
+        lastScore: displayValue,
+        showScore: true,
+        actionTimer: numUtils.getRandomInt(ACTION_TIMER_MIN,ACTION_TIMER_MAX),
+        explode: true,
+      })
+    })
+
+    this.state.progress.setValue(0)
+    this.lastScoreAnimation()
+    this.explodeTimer = setTimeout(() => this.setState({ explode: false, showScore: false }), 1000)
   }
 
   onPressIn() {
-    clearTimeout(this.explodeTimer);
-    this.setState({ explode: false });
+    clearTimeout(this.explodeTimer)
+    this.state.lastScoreAnimation.setValue(1)
+    this.setState({ explode: false, showScore: false, })
+    this.progressAnimation()
+  }
 
+  progressAnimation() {
     Animated.sequence([
       Animated.timing(this.state.progress, { duration: this.state.actionTimer, toValue: 1 }),
       Animated.timing(this.state.progress, { duration: this.state.actionTimer, toValue: 0 }),
     ]).start((e) => {
-      if (e.finished) this.onPressIn();
+      if (e.finished) this.progressAnimation()
     })
   }
 
-  getProgressStyles() {
-    return this.state.progress.interpolate({
-      inputRange: [0, 1],
-      outputRange: [0, BTN_RADIUS * 2]
-    });
+  lastScoreAnimatedSize() {
+    return this.state.lastScoreAnimation.interpolate({
+      inputRange: [0, 0.15, 0.5],
+      outputRange: [1, 1.1, 1.15],
+    })
+  }
+
+  lastScoreAnimation() {
+    Animated.timing(this.state.lastScoreAnimation, {
+      duration: 1000,
+      easing: Easing.easeIn,
+      toValue: 0
+    }).start()
   }
 
   render() {
@@ -98,12 +123,23 @@ class StokedBtn extends Component {
             </View>
 
             <View style={ styles.circleInside }>
-              <Text style={ styles.btnTxt }>STOKED</Text>
+              { !this.state.showScore && <Text style={ styles.btnTxt }>STOKED</Text> }
+              { this.state.showScore &&
+                <Animated.Text style={[
+                  styles.btnTxt,
+                  {
+                    opacity: this.state.lastScoreAnimation,
+                    transform: [{ scale: this.lastScoreAnimatedSize() }]
+                  }
+                ]} >
+                  { `${this.state.lastScore}%` }
+                </Animated.Text>
+              }
             </View>
           </View>
         </TouchableWithoutFeedback>
       </View>
-    );
+    )
   }
 }
 
@@ -114,47 +150,31 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-  },
-
-  bgFill: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    width: BTN_RADIUS * 2,
-    backgroundColor: EPIC_GREEN,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 
   btnContainer: {
-    alignItems: 'center',
     backgroundColor: '#000',
-    justifyContent: 'center',
-    overflow: 'hidden',
     height: BTN_SIZE,
     width: BTN_SIZE,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 25 },
-    shadowOpacity: 0.35,
-    shadowRadius: 50,
     borderRadius: BTN_SIZE,
-    position: 'absolute',
-    left: (deviceWidth / 2) - BTN_RADIUS,
-    top: (deviceHeight / 2) - BTN_RADIUS,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.35,
+    shadowRadius: 12,
   },
 
-  progressContainer: { transform: [{ rotate: '-90deg' }] },
-
-  surface: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    backgroundColor: 'transparent',
+  progressContainer: {
+    transform: [{ rotate: '-90deg' }],
+    borderRadius: BTN_SIZE,
+    overflow: 'hidden',
   },
 
   btnTxt: {
     fontSize: deviceWidth <= 320 ? 21 : 32,
     letterSpacing: 3,
     color: '#fff',
-    backgroundColor: 'transparent',
     fontFamily: 'Futura-Medium',
   },
 
@@ -171,4 +191,13 @@ const styles = StyleSheet.create({
   },
 })
 
-export default StokedBtn;
+const mapStateToProps = (state) => ({
+  stoked: state.stokedReducer,
+  currentUser: state.sessionReducer,
+})
+
+const mapActionsToProps = (dispatch) => ({
+  postScore: (score) => dispatch(postScore(score)),
+})
+
+export default connect(mapStateToProps, mapActionsToProps)(StokedBtn)

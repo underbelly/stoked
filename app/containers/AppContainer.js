@@ -9,14 +9,8 @@ import React, {
 } from 'react-native';
 
 import { connect } from 'react-redux/native';
-import { bindActionCreators } from 'redux';
-import stokedActions, { postCount, getCount } from '../actions/StokedActions';
-
-import sessionActions, {
-  getSession,
-  setSession,
-  destroySession,
-} from '../actions/SessionActions';
+import { postCount, getCount } from '../actions/StokedActions';
+import { getSession, setSession, destroySession } from '../actions/SessionActions';
 
 import Game from './GameContainer';
 import Login from './LoginContainer';
@@ -33,32 +27,35 @@ class App extends Component {
   };
 
   componentWillMount() {
-    this.props.dispatch(getSession());
+    this.props.getSession();
   }
 
   render() {
-    const { dispatch, stoked, currentUser } = this.props;
+    const { stoked, currentUser } = this.props;
 
     return (
       <View style={{ flex: 1 }}>
         { currentUser.username !== null && stoked.loaded && <Game
           highScore={ stoked.highScore }
-          postScore={ (score) => dispatch(postScore(currentUser.username, score)) }
-          destroySession={ () => dispatch(destroySession()) }
+          destroySession={ () => this.props.destroySession() }
         /> }
         { currentUser.username === null && stoked.loaded && <Login
-          setSession={ (twitterData) => dispatch(setSession(twitterData)) }
+          setSession={ (twitterData) => this.props.setSession(twitterData) }
         /> }
       </View>
     );
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    stoked: state.stokedReducer,
-    currentUser: state.sessionReducer
-  };
-};
+const mapStateToProps = (state) => ({
+  stoked: state.stokedReducer,
+  currentUser: state.sessionReducer
+})
 
-export default connect(mapStateToProps)(App);
+const mapActionsToProps = (dispatch) => ({
+  setSession: (twitterData) => dispatch(setSession(twitterData)),
+  destroySession: () => dispatch(destroySession()),
+  getSession: () => dispatch(getSession()),
+})
+
+export default connect(mapStateToProps, mapActionsToProps)(App);
