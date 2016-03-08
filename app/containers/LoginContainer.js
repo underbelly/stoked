@@ -46,13 +46,6 @@ class Login extends Component {
             style={ styles.btn }
             onPress={ () => this.login() }
           >
-            <Text style={ styles.btnTxt }>FACEBOOK</Text>
-          </TouchableHighlight>
-
-          <TouchableHighlight
-            style={ styles.btn }
-            onPress={ () => this.login() }
-          >
             <Text style={ styles.btnTxt }>TWITTER</Text>
           </TouchableHighlight>
         </View>
